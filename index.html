@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQA A-Level Chemistry: Amines - Interactive Summary</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.1) 10px,
+                rgba(255, 255, 255, 0.1) 20px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .section {
+            margin: 20px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .section-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: left 0.3s ease;
+        }
+
+        .section-header:hover::before {
+            left: 0;
+        }
+
+        .section-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease, max-height 0.5s ease;
+        }
+
+        .section.active .section-content {
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .section-icon {
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .section.active .section-icon {
+            transform: rotate(180deg);
+        }
+
+        .blue-section { background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); }
+        .blue-section .section-header { background: #1976D2; color: white; }
+
+        .green-section { background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%); }
+        .green-section .section-header { background: #388E3C; color: white; }
+
+        .orange-section { background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%); }
+        .orange-section .section-header { background: #F57C00; color: white; }
+
+        .purple-section { background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%); }
+        .purple-section .section-header { background: #7B1FA2; color: white; }
+
+        .pink-section { background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD0 100%); }
+        .pink-section .section-header { background: #C2185B; color: white; }
+
+        .cyan-section { background: linear-gradient(135deg, #E1F5FE 0%, #B3E5FC 100%); }
+        .cyan-section .section-header { background: #0288D1; color: white; }
+
+        .lime-section { background: linear-gradient(135deg, #F9FBE7 0%, #F0F4C3 100%); }
+        .lime-section .section-header { background: #689F38; color: white; }
+
+        .brown-section { background: linear-gradient(135deg, #EFEBE9 0%, #D7CCC8 100%); }
+        .brown-section .section-header { background: #5D4037; color: white; }
+
+        h2 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        h3 {
+            color: #555;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #FFEB3B 0%, #FFC107 100%);
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .warning-box {
+            background: #FFCDD2;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #D32F2F;
+            margin: 15px 0;
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .warning-box::before {
+            content: '⚠️';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+        }
+
+        .equation {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            font-size: 1.1em;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .equation:hover {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .correct {
+            color: #2E7D32;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: #D32F2F;
+            font-weight: bold;
+        }
+
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 8px 0;
+            position: relative;
+        }
+
+        .quiz-section {
+            display: none;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quiz-option {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: #e0e0e0;
+            transform: translateX(5px);
+        }
+
+        .quiz-option.correct {
+            background: #C8E6C9;
+            border: 2px solid #4CAF50;
+        }
+
+        .quiz-option.incorrect {
+            background: #FFCDD2;
+            border: 2px solid #f44336;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        @media print {
+            * {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            body {
+                background: white !important;
+                padding: 0;
+                margin: 0;
+            }
+
+            .container {
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            header {
+                background: #667eea !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                page-break-after: avoid;
+            }
+
+            .controls {
+                display: none !important;
+            }
+
+            .section {
+                page-break-inside: avoid;
+                box-shadow: none !important;
+                margin: 10px 0 !important;
+            }
+
+            .section-content {
+                max-height: none !important;
+                padding: 20px !important;
+                display: block !important;
+                overflow: visible !important;
+            }
+
+            .section-header {
+                cursor: default;
+                background-color: inherit !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .section-icon {
+                display: none !important;
+            }
+
+            .quiz-section {
+                display: none !important;
+            }
+
+            header::before {
+                display: none !important;
+            }
+
+            .highlight-box {
+                animation: none !important;
+                background: #FFEB3B !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .warning-box {
+                background: #FFCDD2 !important;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .equation {
+                background: #f5f5f5 !important;
+                border: 1px solid #999 !important;
+            }
+
+            .interactive-demo {
+                display: none !important;
+            }
+
+            .molecule-animation {
+                animation: none !important;
+            }
+
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+
+            ul, ol {
+                page-break-inside: avoid;
+            }
+        }
+
+        .interactive-demo {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .molecule-animation {
+            display: inline-block;
+            animation: rotate 4s linear infinite;
+            font-size: 48px;
+            margin: 10px;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 2px dotted #667eea;
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 AQA A-Level Chemistry: Amines</h1>
+            <p class="subtitle">Interactive Summary Sheet</p>
+        </header>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="toggleAll()">
+                <span id="toggleText">Expand All</span>
+            </button>
+            <button class="btn btn-success" onclick="printSummary()">
+                Print Summary
+            </button>
+        </div>
+
+        <div class="content">
+            <div class="section blue-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>🔬 Classification & Structure</h2>
+                    <span class="section-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <h3>Primary (1°), Secondary (2°), Tertiary (3°) Amines</h3>
+                    <ul>
+                        <li><strong>Primary:</strong> R-NH₂ (one alkyl/aryl group)</li>
+                        <li><strong>Secondary:</strong> R₂NH (two alkyl/aryl groups)</li>
+                        <li><strong>Tertiary:</strong> R₃N (three alkyl/aryl groups)</li>
+                        <li><strong>Quaternary ammonium salt:</strong> R₄N⁺X⁻ (four alkyl groups, positive charge)</li>
+                    </ul>
+
+                    <div class="interactive-demo">
+                        <p>Interactive Visualization:</p>
+                        <span class="molecule-animation">⚛️</span>
+                        <p>Hover over terms for more info!</p>
+                    </div>
+
+                    <h3>Aliphatic vs Aromatic Amines</h3>
+                    <ul>
+                        <li><strong>Aliphatic:</strong> <span class="tooltip">CₙH₂ₙ₊₃N<span class="tooltiptext">General formula for primary aliphatic amines</span></span> (e.g., methylamine, ethylamine)</li>
+                        <li><strong>Aromatic:</strong> Contain benzene ring (e.g., phenylamine/aniline)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section green-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>⚗️ Preparation Methods - KEY EXAM TOPIC</h2>
+                    <span class="section-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <h3>1. Primary Aliphatic Amines from Halogenoalkanes</h3>
+                    <p><strong>Reagents & Conditions:</strong> Excess ammonia in ethanol, warm</p>
+                    <div class="equation">R-X + 2NH₃ → R-NH₂ + NH₄⁺X⁻</div>
+                    <p><strong>Mechanism:</strong> Nucleophilic substitution</p>
+                    <ul>
+                        <li><strong>Step 1:</strong> NH₃ attacks δ⁺ carbon (nucleophile)</li>
+                        <li><strong>Step 2:</strong> Second NH₃ removes H⁺ (acts as base)</li>
+                    </ul>
+                    <div class="warning-box">
+                        <strong>EXAM TIP:</strong> Use EXCESS ammonia to prevent further substitution to 2° and 3° amines
+                    </div>
+
+                    <h3>2. Primary Aliphatic Amines from Nitriles</h3>
+                    <p><strong>Reagents & Conditions:</strong></p>
+                    <ul>
+                        <li>H₂ + Ni catalyst, high T & P</li>
+                        <li>OR LiAlH₄ in dry ether</li>
+                    </ul>
+                    <div class="equation">R-C≡N + 2H₂ → R-CH₂-NH₂</div>
+                    <p><strong>Type:</strong> Reduction reaction</p>
+
+                    <h3>3. Aromatic Amines (Phenylamine)</h3>
+                    <p><strong>Step 1 - Nitration:</strong> Benzene + HNO₃ + H₂SO₄ → Nitrobenzene</p>
+                    <p><strong>Step 2 - Reduction:</strong> Nitrobenzene + Sn + HCl, reflux → Phenylamine</p>
+                    <p><strong>Overall:</strong> Reduction of nitro compounds</p>
+                </div>
+            </div>
+
+            <div class="section orange-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>⚖️ Base Properties - FREQUENTLY EXAMINED</h2>
+                    <span class="section-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <h3>Key Definition</h3>
+                    <p><strong>Base:</strong> Substance that accepts H⁺ ions (lone pair donor)</p>
+
+                    <h3>Basicity Order (LEARN THIS!)</h3>
+                    <div class="highlight-box">
+                        1° Aliphatic amines > Ammonia > 1° Aromatic amines
+                    </div>
+
+                    <h3>Explanation of Basicity Differences</h3>
+                    <h4>Aliphatic amines (STRONGER bases):</h4>
+                    <ul>
+                        <li>Alkyl groups are electron-donating (+I effect)</li>
+                        <li>Increases electron density on nitrogen</li>
+                        <li>Lone pair MORE available to accept H⁺</li>
+                    </ul>
+
+                    <h4>Aromatic amines (WEAKER bases):</h4>
+                    <ul>
+                        <li>Lone pair delocalised into benzene ring</li>
+                        <li>Decreases electron density on nitrogen</li>
+                        <li>Lone pair LESS available to accept H⁺</li>
+                    </ul>
+
+                    <div class="warning-box">
+                        <strong>EXAM TIP:</strong> Always explain basicity in terms of "availability of lone pair"
+                    </div>
+
+                    <h3>Reactions with Acids</h3>
+                    <div class="equation">R-NH₂ + HCl → R-NH₃⁺Cl⁻</div>
+                    <ul>
+                        <li>Forms ionic salts (soluble in water)</li>
+                        <li>Can be reversed with alkali: R-NH₃⁺Cl⁻ + NaOH → R-NH₂ + NaCl + H₂O</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section purple-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>🎯 Nucleophilic Properties</h2>
+                    <span class="section-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <h3>Key Definition</h3>
+                    <p><strong>Nucleophile:</strong> Electron pair donor (due to lone pair on nitrogen)</p>
+
+                    <h3>Nucleophilic Substitution with Halogenoalkanes</h3>
+                    <p><strong>Products formed in sequence:</strong></p>
+                    <ol>
+                        <li><strong>Primary amine:</strong> RX + NH₃ → RNH₂</li>
+                        <li><strong>Secondary amine:</strong> RX + RNH₂ → R₂NH</li>
+                        <li><strong>Tertiary amine:</strong> RX + R₂NH → R₃N</li>
+                        <li><strong>Quaternary ammonium salt:</strong> RX + R₃N → R₄N⁺X⁻</li>
+                    </ol>
+                    <p><strong>Mechanism name:</strong> Nucleophilic substitution</p>
+
+                    <h3>Nucleophilic Addition-Elimination Reactions</h3>
+                    
+                    <h4>With Acyl Chlorides</h4>
+                    <div class="equation">RCOCl + 2NH₃ → RCONH₂ + NH₄⁺Cl⁻ (primary amide)</div>
+                    <div class="equation">RCOCl + 2R'NH₂ → RCONHR' + R'NH₃⁺Cl⁻ (secondary amide)</div>
+
+                    <h4>With Acid Anhydrides</h4>
+                    <div class="equation">(RCO)₂O + R'NH₂ → RCONHR' + RCOOH</div>
+                    <p><strong>Products:</strong> Amide + Carboxylic acid</p>
+                    <p><strong>Mechanism name:</strong> Nucleophilic addition-elimination</p>
+                </div>
+            </div>
+
+            <div class="section pink-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>🧼 Quaternary Ammonium Salts ("Quats")</h2>
+                    <span class="section-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <h3>Structure & Uses</h3>
+                    <ul>
+                        <li><strong>Cationic surfactants</strong> (positive charge on nitrogen)</li>
+                        <li><strong>Uses:</strong> Detergents, fabric conditioners</li>
+                        <li><strong>Structure:</strong> Long hydrocarbon chains + ionic head</li>
+                        <li><strong>Soluble in water</strong> (ionic region)</li>
+                        <li><strong>Insoluble in water</strong> (hydrocarbon region)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section cyan-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>📝 Exam Command Words & Mark Scheme Language</h2>
+                    <span class="section-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <h3>When explaining basicity differences:</h3>
+                    <ul>
+                        <li><span class="correct">✅ USE:</span> "availability of lone pair"</li>
+                        <li><span class="correct">✅ USE:</span> "electron density on nitrogen"</li>
+                        <li><span class="correct">✅ USE:</span> "delocalisation into ring"</li>
+                        <li><span class="incorrect">❌ AVOID:</span> "stronger/weaker" without explanation</li>
+                    </ul>
+
+                    <h3>When writing mechanisms:</h3>
+                    <ul>
+                        <li><span class="correct">✅ CURLY ARROWS:</span> Start from lone pair, go to δ⁺ carbon</li>
+                        <li><span class="correct">✅ SHOW:</span> All charges and lone pairs</li>
+                        <li><span class="correct">✅ LABEL:</span> Products clearly</li>
+                    </ul>
+
+                    <h3>Common Exam Mistakes to Avoid:</h3>
+                    <ol>
+                        <li>Forgetting to use EXCESS ammonia in nucleophilic substitution</li>
+                        <li>Not explaining basicity in terms of lone pair availability</li>
+                        <li>Drawing straight arrows instead of curly arrows in mechanisms</li>
+                        <li>Forgetting the second step in nucleophilic substitution (base removal of H⁺)</li>
+                        <li>Not balancing equations properly (remember 2 moles of nucleophile needed)</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="section lime-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>📋 Quick Reference Equations</h2>
+                    <span class="section-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <h3>Preparation</h3>
+                    <div class="equation">From halogenoalkanes: CH₃CH₂Br + 2NH₃ → CH₃CH₂NH₂ + NH₄⁺Br⁻</div>
+                    <div class="equation">From nitriles: CH₃CH₂CN + 2H₂ → CH₃CH₂CH₂NH₂</div>
+
+                    <h3>Base reactions</h3>
+                    <div class="equation">With acid: CH₃NH₂ + HCl → CH₃NH₃⁺Cl⁻</div>
+                    <div class="equation">Salt + alkali: CH₃NH₃⁺Cl⁻ + NaOH → CH₃NH₂ + NaCl + H₂O</div>
+
+                    <h3>Nucleophilic reactions</h3>
+                    <div class="equation">With acyl chloride: CH₃COCl + 2NH₃ → CH₃CONH₂ + NH₄⁺Cl⁻</div>
+                    <div class="equation">With anhydride: (CH₃CO)₂O + CH₃NH₂ → CH₃CONHCH₃ + CH₃COOH</div>
+                </div>
+            </div>
+
+            <div class="section brown-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>🎯 Key Exam Tips Summary</h2>
+                    <span class="section-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <ol>
+                        <li><strong>Always use EXCESS ammonia</strong> for primary amine synthesis</li>
+                        <li><strong>Basicity depends on lone pair availability</strong> - learn the order!</li>
+                        <li><strong>Curly arrows in mechanisms</strong> - from lone pair to δ⁺ carbon</li>
+                        <li><strong>Two-step nucleophilic substitution</strong> - nucleophile attack then base removal</li>
+                        <li><strong>Balance equations correctly</strong> - 2 moles nucleophile in most reactions</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allExpanded = false;
+
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('active');
+        }
+
+        function toggleAll() {
+            const sections = document.querySelectorAll('.section');
+            const toggleBtn = document.getElementById('toggleText');
+            
+            if (!allExpanded) {
+                sections.forEach(section => section.classList.add('active'));
+                toggleBtn.textContent = 'Collapse All';
+                allExpanded = true;
+            } else {
+                sections.forEach(section => section.classList.remove('active'));
+                toggleBtn.textContent = 'Expand All';
+                allExpanded = false;
+            }
+        }
+
+        function printSummary() {
+            // Expand all sections before printing
+            const sections = document.querySelectorAll('.section');
+            const alreadyExpanded = [];
+            
+            // Record which sections were already expanded
+            sections.forEach((section, index) => {
+                alreadyExpanded[index] = section.classList.contains('active');
+                if (!alreadyExpanded[index]) {
+                    section.classList.add('active');
+                }
+            });
+            
+            // Print
+            window.print();
+            
+            // Restore original state after a short delay
+            setTimeout(() => {
+                sections.forEach((section, index) => {
+                    if (!alreadyExpanded[index]) {
+                        section.classList.remove('active');
+                    }
+                });
+            }, 100);
+        }
+
+        // Add some interactive tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-expand first section for better initial experience
+            document.querySelector('.section').classList.add('active');
+            
+            // Add smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'p':
+                        e.preventDefault();
+                        window.print();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        toggleAll();
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
